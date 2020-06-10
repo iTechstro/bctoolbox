@@ -1,21 +1,21 @@
 /*
-	bctoolbox
-    Copyright (C) 2017  Belledonne Communications SARL
-
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright (c) 2016-2020 Belledonne Communications SARL.
+ *
+ * This file is part of bctoolbox.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -109,7 +109,7 @@ void bctbx_ECDHSetSecretKey(bctbx_ECDHContext_t *context, const uint8_t *secret,
 		if (context->secret == NULL) { /* allocate a new buffer */
 			context->secret = (uint8_t *)bctbx_malloc(context->secretLength);
 		} else { /* or make sure we wipe out the existing one */
-			memset(context->secret, 0, context->secretLength);
+			bctbx_clean(context->secret, context->secretLength);
 		}
 		memcpy(context->secret, secret, secretLength);
 	}
@@ -184,7 +184,7 @@ void bctbx_ECDHCreateKeyPair(bctbx_ECDHContext_t *context, int (*rngFunction)(vo
 		if (context->secret == NULL) { /* allocate buffer if needed */
 			context->secret = (uint8_t *)bctbx_malloc(context->secretLength);
 		} else { /* otherwise make sure we wipe out previous secret */
-			memset(context->secret, 0, context->secretLength);
+			bctbx_clean(context->secret, context->secretLength);
 		}
 		rngFunction(rngContext, context->secret, context->secretLength);
 
@@ -199,21 +199,21 @@ void bctbx_ECDHComputeSecret(bctbx_ECDHContext_t *context, int (*rngFunction)(vo
 		if (context->sharedSecret == NULL) { /* allocate buffer if needed */
 			context->sharedSecret = (uint8_t *)bctbx_malloc(context->pointCoordinateLength);
 		} else { /* otherwise make sure we wipe out previous secret */
-			memset(context->sharedSecret, 0, context->pointCoordinateLength);
+			bctbx_clean(context->sharedSecret, context->pointCoordinateLength);
 		}
 
 		switch (context->algo) {
 			case BCTBX_ECDH_X25519:
 				if (decaf_x25519(context->sharedSecret, context->peerPublic, context->secret)==DECAF_FAILURE) {
 					bctbx_free(context->sharedSecret);
-					memset(context->sharedSecret, 0, context->pointCoordinateLength);
+					bctbx_clean(context->sharedSecret, context->pointCoordinateLength);
 					context->sharedSecret=NULL;
 				}
 				break;
 			case BCTBX_ECDH_X448:
 				if (decaf_x448(context->sharedSecret, context->peerPublic, context->secret)==DECAF_FAILURE) {
 					bctbx_free(context->sharedSecret);
-					memset(context->sharedSecret, 0, context->pointCoordinateLength);
+					bctbx_clean(context->sharedSecret, context->pointCoordinateLength);
 					context->sharedSecret=NULL;
 				}
 				break;

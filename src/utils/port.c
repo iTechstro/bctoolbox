@@ -1,22 +1,22 @@
 
 /*
- bctoolbox
- Copyright (C) 2016  Belledonne Communications SARL
-
-  This library is free software; you can redistribute it and/or
-  modify it under the terms of the GNU Lesser General Public
-  License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
-
-  This library is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+ * Copyright (c) 2016-2020 Belledonne Communications SARL.
+ *
+ * This file is part of bctoolbox.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -774,7 +774,7 @@ void bctbx_sleep_ms(int ms){
 }
 
 void bctbx_sleep_until(const bctoolboxTimeSpec *ts){
-#ifdef __linux
+#ifdef __linux__
 	struct timespec rq;
 	rq.tv_sec=ts->tv_sec;
 	rq.tv_nsec=ts->tv_nsec;
@@ -955,7 +955,7 @@ static int bctbx_wincrypto_random(unsigned int *rand_number){
 #endif
 
 unsigned int bctbx_random(void){
-#if defined(__linux) || defined(__APPLE__)
+#if defined(__linux__) || defined(__APPLE__)
 	static int fd=-1;
 	if (fd==-1) fd=open("/dev/urandom",O_RDONLY);
 	if (fd!=-1){

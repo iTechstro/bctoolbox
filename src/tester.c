@@ -1,20 +1,21 @@
 /*
-  tester - liblinphone test suite
-  Copyright (C) 2013  Belledonne Communications SARL
-
-  This program is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 2 of the License, or
-  (at your option) any later version.
-
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright (c) 2016-2020 Belledonne Communications SARL.
+ *
+ * This file is part of bctoolbox.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -60,7 +61,7 @@
 #endif
 #endif
 
-#ifdef __linux
+#ifdef __linux__
 /*for monitoring total space allocated via malloc*/
 #include <malloc.h>
 #endif
@@ -475,7 +476,7 @@ static void test_complete_message_handler(const CU_pTest pTest, const CU_pSuite 
 	//insert empty line
 	bc_tester_printf(bc_printf_verbosity_info,"");
 
-#ifdef __linux
+#ifdef __linux__
 	/* use mallinfo() to monitor allocated space. It is linux specific but other methods don't work:
 	 * setrlimit() RLIMIT_DATA doesn't count memory allocated via mmap() (which is used internally by malloc)
 	 * setrlimit() RLIMIT_AS works but also counts virtual memory allocated by thread stacks, which is very big and
@@ -907,7 +908,7 @@ int bc_tester_run_tests(const char *suite_name, const char *test_name, const cha
 					CU_run_all_tests();
 				}
 		}
-#ifdef __linux
+#ifdef __linux__
 	bc_tester_printf(bc_printf_verbosity_info, "Still %i kilobytes allocated when all tests are finished.",
 			 mallinfo().uordblks / 1024);
 #endif
@@ -1079,7 +1080,7 @@ void bc_tester_init(void (*ftester_printf)(int level, const char *format, va_lis
 }
 
 void bc_tester_set_max_vm(size_t amax_vm_kb) {
-#ifdef __linux
+#ifdef __linux__
 	max_vm_kb = (size_t)amax_vm_kb;
 	bc_tester_printf(bc_printf_verbosity_info, "Maximum virtual memory space set to %li kilo bytes", max_vm_kb);
 #else
